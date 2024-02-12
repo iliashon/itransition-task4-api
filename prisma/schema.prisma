@@ -7,8 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Phones {
-  id    Int    @id @unique @default(autoincrement())
-  name  String
-  model String
+model Users {
+  id         Int       @id @unique @default(autoincrement())
+  email      String    @db.VarChar(256)
+  password   String    @db.VarChar(64)
+  first_name String    @db.VarChar(256)
+  last_name  String    @db.VarChar(256)
+  blocked    Boolean   @default(false)
+  last_login DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 }
