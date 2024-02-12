@@ -1,18 +1,9 @@
-const express = require('express')
+const express = require('express'),
+      routes = require('./routes/index')
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Home page')
-})
-
-app.get('/about', (req, res) => {
-    res.send('About page')
-})
-
-app.get('/contact', (req, res) => {
-    res.send('Contact page')
-})
+app.use(routes)
 
 app.listen(3000, () => {
     console.log('Start server')
