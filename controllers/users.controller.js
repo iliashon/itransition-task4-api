@@ -6,7 +6,8 @@ class UsersController {
     }
 
     async createUser(req, res) {
-
+        const newPhone = await UsersService.createUser()
+        res.send(JSON.stringify(newPhone))
     }
 
     async updateUser(req, res) {
