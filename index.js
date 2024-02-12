@@ -14,4 +14,8 @@ app.get('/contact', (req, res) => {
     res.send('Contact page')
 })
 
+app.listen(3000, () => {
+    console.log('Start server')
+})
+
 module.exports = app;
