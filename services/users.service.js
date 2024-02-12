@@ -1,28 +1,22 @@
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient } = require("@prisma/client");
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 class UsersService {
-    getUsers() {
-
-    }
+    getUsers() {}
 
     createUser(data) {
         return prisma.phones.create({
             data: {
                 name: "Apple",
-                model: "Iphone 14 pro"
-            }
-        })
+                model: "Iphone 14 pro",
+            },
+        });
     }
 
-    updateUser(data) {
+    updateUser(data) {}
 
-    }
-
-    deleteUser(data) {
-
-    }
+    deleteUser(data) {}
 }
 
 module.exports = new UsersService();
