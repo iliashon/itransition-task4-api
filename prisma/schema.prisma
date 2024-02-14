@@ -17,4 +17,12 @@ model Users {
   last_login DateTime?
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
+  token      Tokens?
+}
+
+model Tokens {
+  id            Int    @id @unique @default(autoincrement())
+  user          Users  @relation(fields: [user_id], references: [id])
+  user_id       Int    @unique
+  refresh_token String
 }

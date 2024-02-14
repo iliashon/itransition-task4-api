@@ -1,23 +1,73 @@
 const UsersService = require("../services/users.service");
-const arrayComprasion = require("../utils/arrayComprasion");
+const { validationResult } = require("express-validator");
+const ApiError = require("../exceptions/apiError");
 
-const FIELDS_TO_CREATE_USER = ["email", "password", "first_name", "last_name"];
+const MAX_AGE_COOKIE = 30 * 24 * 60 * 60 * 1000;
 
 class UsersController {
-    async getUser(req, res) {
-        res.send(JSON.stringify({ id: req.params.id }));
-    }
-    async getAllUsers(req, res) {
-        const data = await UsersService.getUsers();
-        res.send(JSON.stringify(data));
+    async getAllUsers(req, res, next) {
+        try {
+            const data = await UsersService.getUsers();
+            res.json(data);
+        } catch (err) {
+            next(err);
+        }
     }
 
-    async createUser(req, res) {
-        if (!arrayComprasion(Object.keys(req.body), FIELDS_TO_CREATE_USER)) {
-            res.status(400).send({ message: "Invalid input data" });
-        } else {
+    async createUser(req, res, next) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return next(
+                    ApiError.BadRequest("Validation error", errors.array()),
+                );
+            }
             const newUser = await UsersService.createUser(req.body);
-            res.status(200).send(JSON.stringify(newUser));
+            res.cookie("refreshToken", newUser.refreshToken, {
+                maxAge: MAX_AGE_COOKIE,
+                httpOnly: true,
+            });
+            res.json(newUser);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async loginUser(req, res, next) {
+        try {
+            const user = await UsersService.loginUser(req.body);
+            res.cookie("refreshToken", user.refreshToken, {
+                maxAge: MAX_AGE_COOKIE,
+                httpOnly: true,
+            });
+            res.json(user);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async logoutUser(req, res, next) {
+        try {
+            const { refreshToken } = req.cookies;
+            const token = await UsersService.logoutUser(refreshToken);
+            res.clearCookie("refreshToken");
+            return res.json(token);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async refresh(req, res, next) {
+        try {
+            const { refreshToken } = req.cookies;
+            const user = await UsersService.refresh(refreshToken);
+            res.cookie("refreshToken", user.refreshToken, {
+                maxAge: MAX_AGE_COOKIE,
+                httpOnly: true,
+            });
+            res.json(user);
+        } catch (err) {
+            next(err);
         }
     }
 
