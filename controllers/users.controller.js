@@ -40,6 +40,7 @@ class UsersController {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
                 sameSite: "none",
+                domain: process.env.CLIENT_URL,
             });
             req.user = user;
             next();
