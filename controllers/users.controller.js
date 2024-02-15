@@ -27,6 +27,7 @@ class UsersController {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
                 sameSite: "none",
+                secure: true,
                 domain: process.env.CLIENT_URL,
             });
             res.json(newUser);
@@ -42,7 +43,8 @@ class UsersController {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
                 sameSite: "none",
-                domain: "itransition-task4-new.vercel.app",
+                secure: true,
+                domain: process.env.CLIENT_URL,
             });
             req.user = user;
             next();
@@ -70,6 +72,7 @@ class UsersController {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
                 sameSite: "none",
+                secure: true,
                 domain: process.env.CLIENT_URL,
             });
             res.json(user);
