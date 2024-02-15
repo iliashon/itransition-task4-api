@@ -28,7 +28,6 @@ class UsersController {
                 httpOnly: true,
                 sameSite: "none",
                 secure: true,
-                domain: process.env.CLIENT_URL,
             });
             res.json(newUser);
         } catch (err) {
@@ -44,7 +43,6 @@ class UsersController {
                 httpOnly: true,
                 sameSite: "none",
                 secure: true,
-                domain: process.env.CLIENT_URL,
             });
             req.user = user;
             next();
@@ -73,7 +71,6 @@ class UsersController {
                 httpOnly: true,
                 sameSite: "none",
                 secure: true,
-                domain: process.env.CLIENT_URL,
             });
             res.json(user);
         } catch (err) {
