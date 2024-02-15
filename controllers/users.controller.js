@@ -26,6 +26,8 @@ class UsersController {
             res.cookie("refreshToken", newUser.refreshToken, {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
+                sameSite: "none",
+                domain: process.env.CLIENT_URL,
             });
             res.json(newUser);
         } catch (err) {
@@ -67,6 +69,8 @@ class UsersController {
             res.cookie("refreshToken", user.refreshToken, {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
+                sameSite: "none",
+                domain: process.env.CLIENT_URL,
             });
             res.json(user);
         } catch (err) {
