@@ -37,6 +37,7 @@ class UsersService {
                 password: hashedPassword,
                 first_name: data.first_name,
                 last_name: data.last_name,
+                last_login: new Date(),
             },
             select: SELECT_USERS,
         });
