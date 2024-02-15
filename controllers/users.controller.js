@@ -39,6 +39,7 @@ class UsersController {
             res.cookie("refreshToken", user.refreshToken, {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
+                sameSite: "none",
             });
             req.user = user;
             next();
