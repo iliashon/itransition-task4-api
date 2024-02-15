@@ -62,12 +62,21 @@ class UsersService {
         if (!isPassEqual) {
             throw ApiError.BadRequest("Incorrect password");
         }
+        const userLastLogin = await prisma.users.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                last_login: new Date(),
+            },
+            select: SELECT_USERS,
+        });
         const tokens = TokenService.generateToken(user);
         await TokenService.saveToken(user.id, tokens.refreshToken);
 
         return {
             ...tokens,
-            user: user,
+            user: userLastLogin,
         };
     }
 
@@ -89,7 +98,8 @@ class UsersService {
                 id: userData.id,
             },
         });
-        const tokens = TokenService.generateToken(user, HASH_SALT);
+
+        const tokens = TokenService.generateToken(user);
         await TokenService.saveToken(user.id, tokens.refreshToken);
 
         return {
@@ -126,7 +136,7 @@ class UsersService {
     deleteUser(data) {
         return prisma.users.deleteMany({
             where: {
-                id: { in: data.id },
+                id: { in: data },
             },
         });
     }

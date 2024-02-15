@@ -16,7 +16,11 @@ module.exports = async function (req, res, next) {
         if (!userData) {
             return next(ApiError.UnauthorizedError());
         }
-        req.user = await UsersService.getUser(userData);
+        const userDb = await UsersService.getUser(userData);
+        if (!userDb) {
+            return next(ApiError.UnauthorizedError());
+        }
+        req.user = userDb;
         next();
     } catch (err) {
         return next(ApiError.UnauthorizedError());

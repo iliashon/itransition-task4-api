@@ -12,14 +12,14 @@ router
         body("password").isLength({ min: 1 }),
         UserController.createUser,
     );
-router.route("/signin").post(blockedMiddleware, UserController.loginUser);
+router.route("/signin").post(UserController.loginUser, blockedMiddleware);
 router.route("/logout").post(UserController.logoutUser);
-router.route("/refresh").get(UserController.refresh);
+router.route("/refresh").get(blockedMiddleware, UserController.refresh);
 
 router
     .route("/")
     .get(authMiddleware, blockedMiddleware, UserController.getAllUsers)
-    .put(authMiddleware, UserController.updateUser)
-    .delete(authMiddleware, UserController.deleteUser);
+    .put(authMiddleware, blockedMiddleware, UserController.updateUser)
+    .delete(authMiddleware, blockedMiddleware, UserController.deleteUser);
 
 module.exports = router;

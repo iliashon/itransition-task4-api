@@ -40,7 +40,8 @@ class UsersController {
                 maxAge: MAX_AGE_COOKIE,
                 httpOnly: true,
             });
-            res.json(user);
+            req.user = user;
+            next();
         } catch (err) {
             next(err);
         }
@@ -84,11 +85,11 @@ class UsersController {
     }
 
     async deleteUser(req, res) {
-        if (!Array.isArray(req.body.id)) {
+        if (!Array.isArray(req.body)) {
             res.status(400).send({ message: "Invalid input data" });
         } else {
             const deleteUsers = await UsersService.deleteUser(req.body);
-            res.status(200).send(JSON.stringify(deleteUsers));
+            res.json(deleteUsers);
         }
     }
 }

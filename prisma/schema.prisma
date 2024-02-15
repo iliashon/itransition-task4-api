@@ -22,7 +22,7 @@ model Users {
 
 model Tokens {
   id            Int    @id @unique @default(autoincrement())
-  user          Users  @relation(fields: [user_id], references: [id])
+  user          Users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id       Int    @unique
   refresh_token String
 }
